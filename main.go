@@ -1,12 +1,12 @@
 package main
 
-import "monitor/email"
 import (
-	"monitor/wechat"
+	"github.com/agile-shark/go-tools/wechat"
 	"log"
 	"fmt"
 	"strings"
 	"strconv"
+	"github.com/agile-shark/go-tools/email"
 )
 
 func email_alert(content string)  (error error){
@@ -15,7 +15,7 @@ func email_alert(content string)  (error error){
 	return error
 }
 
-func wechat_qlert(content string)  error{
+func wechat_alert(content string)  error{
 
 	// Fetch access_token
 	accessToken, expiresIn, error := wechat.FetchAccessToken()
@@ -39,5 +39,5 @@ func main()  {
 	message_count := 10000
 	alert_message := strings.Join([]string{"消息队列", "83", "消息量超过预警阀值 \n 当前消息总量为", strconv.Itoa(message_count)}, "")
 	email_alert(alert_message)
-	wechat_qlert(alert_message)
+	wechat_alert(alert_message)
 }
