@@ -7,17 +7,17 @@ import(
 )
 
 func controller(content string) (bool, error) {
-    log.Printf("controller Received a message : %s", content)
+    //log.Printf("controller Received a message : %s", content)
     return true,nil
 }
 
 
 func Test_consumers(t *testing.T){
-    for{
-        Counts(NewMqQueue("10.38.14.105:5672", "exchange", "routekey", []string{"queueTest"}))
-        Consumer(NewMqQueue("10.38.14.105:5672", "exchange", "routekey", []string{"queueTest1", "queueTest1"}), controller)
-        Counts(NewMqQueue("10.38.14.105:5672", "exchange", "routekey", []string{"queueTest"}))
-    }
+    //for{
+        //Counts(NewMqQueue("10.38.14.105:5672", "exchange", "routekey", []string{"queueTest"}))
+        Consumer(NewMqQueue("10.1.4.83:5672", "exchange", "routekey", []string{"queueTest1", "queueTest1"}), controller)
+        //Counts(NewMqQueue("10.38.14.105:5672", "exchange", "routekey", []string{"queueTest"}))
+    //}
 }
 
 func Test_producer(t *testing.T){

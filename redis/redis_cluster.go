@@ -1,24 +1,20 @@
 package redis
 
 import (
-	"github.com/chasex/redis-go-cluster"
-	"time"
 	"fmt"
+	"gopkg.in/redis.v4"
 )
 
-func ConnectRedis(serverAddr []string) *redis.Cluster {
+func ConnectRedis(serverAddr []string) *redis.ClusterClient {
 
-	cluster, err := redis.NewCluster(
-		&redis.Options{
-			StartNodes: serverAddr,
-			ConnTimeout: 50 * time.Millisecond,
-			ReadTimeout: 50 * time.Millisecond,
-			WriteTimeout: 50 * time.Millisecond,
-			KeepAlive: 16,
-			AliveTime: 60 * time.Second,
-		})
+	client := redis.NewClusterClient(&redis.ClusterOptions{
+		Addrs: serverAddr,
+	})
+
+	_, err := client.Ping().Result()
 	if err == nil{
 		fmt.Println("redis connect ok")
 	}
-	return cluster
+
+	return client
 }

@@ -71,19 +71,19 @@ func Consumer(mqQueue *MqQueue, controller functionType){
 	failOnError(err, "Failed to declare a queue")
 
 	err = ch.QueueBind(
-		mqQueue.queueName[0], 		// queue name
+		mqQueue.queueName[0],   // queue name
 		mqQueue.routeKey,     	// routing key
 		mqQueue.exchange,     	// exchange
 		false,
 		nil)
-	failOnError(err, "Failed to bind a queue") // delete when usused
+	failOnError(err, "Failed to bind a queue")
 
-	err = ch.Qos(
-		1,     // prefetch count
-		0,     // prefetch size
-		false, // global
-	)
-	failOnError(err, "Failed to set QoS")
+//	err = ch.Qos(
+//		1,     // prefetch count
+//		0,     // prefetch size
+//		false, // global
+//	)
+//	failOnError(err, "Failed to set QoS")
 
 	msgs, err := ch.Consume(
 		q.Name, 			// queue
