@@ -16,11 +16,11 @@ func Test_send(t *testing.T) {
 	fmt.Println(accessToken, expiresIn)
 
 	//Post custom service message
-	openID := "oT6jJvqQlsQDUmnN_rMzHaV5pD-8"
-	msg := "你好" + "\U0001f604"
-	err = PushCustomMsg(accessToken, openID, msg)
-	if err != nil {
-		log.Println("Push custom service message err:", err)
-		return
-	}
+//	openID := "oT6jJvqQlsQDUmnN_rMzHaV5pD-8"
+//	msg := "你好" + "\U0001f604"
+//	err = PushCustomMsg(accessToken, openID, msg)
+//	if err != nil {
+//		log.Println("Push custom service message err:", err)
+//		return
+//	}
 }

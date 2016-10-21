@@ -9,7 +9,7 @@ const (
 	appID                = "wxaeb7504679f0d461"
 	appSecret            = "a56163c3c7825c543a7262976d9009fc"
 	accessTokenFetchUrl  = "https://api.weixin.qq.com/cgi-bin/token"
-	customServicePostUrl = "https://api.weixin.qq.com/cgi-bin/message/mass/send"
+	customServicePostUrl = "https://api.weixin.qq.com/cgi-bin/message/custom/send"
 
 	token          = "wechat4go"
 	encodingAESKey = "kZvGYbDKbtPbhv4LBWOcdsp5VktA3xe9epVhINevtGg"

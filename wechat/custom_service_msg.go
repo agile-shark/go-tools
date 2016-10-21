@@ -56,7 +56,6 @@ func PushCustomMsg(accessToken, toUser, msg string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(string(body))
 
 	postReq, err := http.NewRequest("POST", strings.Join([]string{customServicePostUrl, "?access_token=", accessToken}, ""), bytes.NewReader(body))
 	if err != nil {
