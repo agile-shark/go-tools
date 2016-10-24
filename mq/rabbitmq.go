@@ -5,6 +5,7 @@ import (
 	"github.com/streadway/amqp"
 	"log"
 	"strings"
+	"fmt"
 )
 
 const (
@@ -30,8 +31,8 @@ func NewMqQueue(serverAddr, exchange, routeKey string, queueName []string) *MqQu
 
 func failOnError(err error, msg string) {
 	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-//		panic(fmt.Sprintf("%s: %s", msg, err))
+		fmt.Sprintf("%s: %s", msg, err)
+		//		panic(fmt.Sprintf("%s: %s", msg, err))
 	}
 }
 
