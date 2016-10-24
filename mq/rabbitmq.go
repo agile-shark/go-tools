@@ -19,20 +19,20 @@ type MqQueue struct {
 	userName     string
 	userPassword string
 	serverAddr   string
-	queueName    []string
+	QueueName    []string
 	exchange     string
 	routeKey     string
 }
 
 func NewMqQueue(serverAddr, exchange, routeKey string, queueName []string) *MqQueue {
 	return &MqQueue{userName: USER_NAME, userPassword: USER_PASSWORD, serverAddr: serverAddr,
-		queueName: queueName, exchange: exchange, routeKey: routeKey}
+		QueueName: queueName, exchange: exchange, routeKey: routeKey}
 }
 
 func failOnError(err error, msg string) {
 	if err != nil {
 		log.Fatalf("%s: %s", msg, err)
-		panic(fmt.Sprintf("%s: %s", msg, err))
+//		panic(fmt.Sprintf("%s: %s", msg, err))
 	}
 }
 
@@ -61,7 +61,7 @@ func Consumer(mqQueue *MqQueue, controller functionType){
 	failOnError(err, "Failed to declare an exchange")
 
 	q, err := ch.QueueDeclare(
-		mqQueue.queueName[0],	// name
+		mqQueue.QueueName[0],	// name
 		false, 				// durable
 		false, 				// delete when usused
 		false,  			// exclusive
@@ -71,7 +71,7 @@ func Consumer(mqQueue *MqQueue, controller functionType){
 	failOnError(err, "Failed to declare a queue")
 
 	err = ch.QueueBind(
-		mqQueue.queueName[0],   // queue name
+		mqQueue.QueueName[0],   // queue name
 		mqQueue.routeKey,     	// routing key
 		mqQueue.exchange,     	// exchange
 		false,
@@ -117,20 +117,26 @@ func Consumer(mqQueue *MqQueue, controller functionType){
 }
 
 //计数
-func Counts(mqQueue *MqQueue) (counts map[string]int) {
+func Counts(mqQueue *MqQueue) (counts map[string]int, err error) {
 
 	//eg."amqp://guest:guest@10.1.4.83:5672/"
 	url := strings.Join([]string{"amqp://", mqQueue.userName, ":", mqQueue.userPassword, "@", mqQueue.serverAddr}, "")
 	conn, err := amqp.Dial(url)
 	failOnError(err, "Failed to connect to RabbitMQ")
+	if(err != nil){
+		return 0, err
+	}
 	defer conn.Close()
 
 	ch, err := conn.Channel()
 	failOnError(err, "Failed to open a channel")
+	if(err != nil){
+		return 0, err
+	}
 	defer ch.Close()
 
 	counts = make(map[string]int)
-	for _, queueName := range mqQueue.queueName {
+	for _, queueName := range mqQueue.QueueName {
 
 		q, err := ch.QueueDeclare(
 			queueName, // name
@@ -141,12 +147,14 @@ func Counts(mqQueue *MqQueue) (counts map[string]int) {
 			nil, // arguments
 		)
 		failOnError(err, "Failed to declare a queue")
-
+		if(err != nil){
+			return 0, err
+		}
 		log.Printf("queueName : %s, count : %d", queueName, q.Messages)
 
 		counts[queueName] = q.Messages
 	}
-	return
+	return counts, nil
 
 }
 
@@ -173,7 +181,7 @@ func Producer(mqQueue *MqQueue, messages []string) {
 	)
 	failOnError(err, "Failed to declare an exchange")
 
-	for _, queueName := range mqQueue.queueName  {
+	for _, queueName := range mqQueue.QueueName {
 
 		_, err = ch.QueueDeclare(
 			queueName,    	        // name
