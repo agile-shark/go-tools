@@ -123,14 +123,14 @@ func Counts(mqQueue *MqQueue) (counts map[string]int, err error) {
 	conn, err := amqp.Dial(url)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	if(err != nil){
-		return 0, err
+		return nil, err
 	}
 	defer conn.Close()
 
 	ch, err := conn.Channel()
 	failOnError(err, "Failed to open a channel")
 	if(err != nil){
-		return 0, err
+		return nil, err
 	}
 	defer ch.Close()
 
@@ -147,7 +147,7 @@ func Counts(mqQueue *MqQueue) (counts map[string]int, err error) {
 		)
 		failOnError(err, "Failed to declare a queue")
 		if(err != nil){
-			return 0, err
+			return nil, err
 		}
 		log.Printf("queueName : %s, count : %d", queueName, q.Messages)
 
