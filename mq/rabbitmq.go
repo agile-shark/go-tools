@@ -18,14 +18,14 @@ type functionType func(string) (bool, error) // 声明了一个函数类型
 type MqQueue struct {
 	userName     string
 	userPassword string
-	serverAddr   string
+	ServerAddr   string
 	QueueName    []string
 	exchange     string
 	routeKey     string
 }
 
 func NewMqQueue(serverAddr, exchange, routeKey string, queueName []string) *MqQueue {
-	return &MqQueue{userName: USER_NAME, userPassword: USER_PASSWORD, serverAddr: serverAddr,
+	return &MqQueue{userName: USER_NAME, userPassword: USER_PASSWORD, ServerAddr: serverAddr,
 		QueueName: queueName, exchange: exchange, routeKey: routeKey}
 }
 
@@ -40,7 +40,7 @@ func failOnError(err error, msg string) {
 func Consumer(mqQueue *MqQueue, controller functionType){
 
 	//eg."amqp://guest:guest@10.1.4.83:5672/"
-	url := strings.Join([]string{"amqp://", mqQueue.userName, ":", mqQueue.userPassword, "@", mqQueue.serverAddr}, "")
+	url := strings.Join([]string{"amqp://", mqQueue.userName, ":", mqQueue.userPassword, "@", mqQueue.ServerAddr}, "")
 	conn, err := amqp.Dial(url)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
@@ -120,7 +120,7 @@ func Consumer(mqQueue *MqQueue, controller functionType){
 func Counts(mqQueue *MqQueue) (counts map[string]int, err error) {
 
 	//eg."amqp://guest:guest@10.1.4.83:5672/"
-	url := strings.Join([]string{"amqp://", mqQueue.userName, ":", mqQueue.userPassword, "@", mqQueue.serverAddr}, "")
+	url := strings.Join([]string{"amqp://", mqQueue.userName, ":", mqQueue.userPassword, "@", mqQueue.ServerAddr}, "")
 	conn, err := amqp.Dial(url)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	if(err != nil){
@@ -161,7 +161,7 @@ func Counts(mqQueue *MqQueue) (counts map[string]int, err error) {
 //生产者
 func Producer(mqQueue *MqQueue, messages []string) {
 
-	url := strings.Join([]string{"amqp://", mqQueue.userName, ":", mqQueue.userPassword, "@", mqQueue.serverAddr}, "")
+	url := strings.Join([]string{"amqp://", mqQueue.userName, ":", mqQueue.userPassword, "@", mqQueue.ServerAddr}, "")
 	conn, err := amqp.Dial(url)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
