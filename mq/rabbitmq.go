@@ -2,7 +2,6 @@
 package mq
 
 import (
-	"fmt"
 	"github.com/streadway/amqp"
 	"log"
 	"strings"
